@@ -30,7 +30,7 @@ async function handleSubmit() {
   try {
     await formRef.value?.validate();
     const res = await login(formModel);
-    console.log(res, 'res');
+    console.log(res, 'login res');
     res.data.token && userStore.setToken(res.data.token);
     res.data.userInfo && userStore.setUserInfo(res.data.userInfo);
     ElMessage.success('登录成功');
@@ -85,7 +85,7 @@ async function handleSubmit() {
     </el-form>
 
     <!-- 注册登录 -->
-    <div class="form-tip font-size-12px flex items-center">
+    <!-- <div class="form-tip font-size-12px flex items-center">
       <span>没有账号？</span>
       <span
         class="c-[var(--el-color-primar,#409eff)] cursor-pointer"
@@ -93,7 +93,7 @@ async function handleSubmit() {
       >
         立即注册
       </span>
-    </div>
+    </div> -->
   </div>
 </template>
 

@@ -15,6 +15,7 @@ import { useChatStore } from '@/stores/modules/chat';
 import { useFilesStore } from '@/stores/modules/files';
 import { useModelStore } from '@/stores/modules/model';
 import { useUserStore } from '@/stores/modules/user';
+import defaultAvatar from '@/assets/images/default-avatar.png'
 
 type MessageItem = BubbleProps & {
   key: number;
@@ -34,7 +35,7 @@ const userStore = useUserStore();
 // 用户头像
 const avatar = computed(() => {
   const userInfo = userStore.userInfo;
-  return userInfo?.avatar || 'https://avatars.githubusercontent.com/u/76239030?v=4';
+  return userInfo?.avatar || defaultAvatar;
 });
 
 const inputValue = ref('');

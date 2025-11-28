@@ -68,10 +68,10 @@ function onAfterLeave() {
             </div>
           </div>
           <div class="right-section">
-            <div class="mode-toggle" @click.stop="toggleLoginMode">
+            <!-- <div class="mode-toggle" @click.stop="toggleLoginMode">
               <SvgIcon v-if="!isQrMode" name="erweimadenglu" />
               <SvgIcon v-else name="zhanghaodenglu" />
-            </div>
+            </div> -->
             <div class="content-wrapper">
               <div v-if="!isQrMode" class="form-box">
                 <!-- 表单容器，父组件可以自定定义表单插槽 -->

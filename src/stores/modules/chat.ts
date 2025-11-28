@@ -2,6 +2,7 @@ import type { ChatMessageVo } from '@/api/chat/types';
 import { defineStore } from 'pinia';
 import { getChatList } from '@/api';
 import { useUserStore } from './user';
+import defaultAvatar from '@/assets/images/default-avatar.png'
 
 export const useChatStore = defineStore('chat', () => {
   const userStore = useUserStore();
@@ -9,7 +10,7 @@ export const useChatStore = defineStore('chat', () => {
   // 用户头像
   const avatar = computed(() => {
     const userInfo = userStore.userInfo;
-    return userInfo?.avatar || 'https://avatars.githubusercontent.com/u/76239030?v=4';
+    return userInfo?.avatar || defaultAvatar;
   });
 
   // 是否开启深度思考

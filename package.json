@@ -1,14 +1,9 @@
 {
-  "name": "ruoyi-element-ai",
+  "name": "jp-ai-web",
   "type": "module",
   "version": "0.0.0",
   "private": true,
-  "description": "ruoyi-element-ai open-source PC AI template",
-  "author": {
-    "name": "HeJiaYue520",
-    "email": "2834007710@qq.com",
-    "url": "https://github.com/HeJiaYue520/HeJiaYue520"
-  },
+  "description": "个人ai项目配套前端，基于开源项目ruoyi-element-ai",
   "license": "MIT",
   "scripts": {
     "dev": "vite",
