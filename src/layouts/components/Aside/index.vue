@@ -50,7 +50,7 @@ function handleChange(item: ConversationItem<ChatSessionVo>) {
   router.replace({
     name: 'chatWithId',
     params: {
-      id: item.id,
+      id: item.conv_id,
     },
   });
 }
@@ -77,9 +77,9 @@ function handleMenuCommand(command: string, item: ConversationItem<ChatSessionVo
       })
         .then(() => {
           // 删除会话
-          sessionStore.deleteSessions([item.id!]);
+          sessionStore.deleteSessions([item.conv_id!]);
           nextTick(() => {
-            if (item.id === active.value) {
+            if (item.conv_id === active.value) {
               // 如果删除当前会话 返回到默认页
               sessionStore.createSessionBtn();
             }
@@ -97,7 +97,7 @@ function handleMenuCommand(command: string, item: ConversationItem<ChatSessionVo
         confirmButtonClass: 'el-button--primary',
         cancelButtonClass: 'el-button--info',
         roundButton: true,
-        inputValue: item.sessionTitle, // 设置默认值
+        inputValue: item.title, // 设置默认值
         autofocus: false,
         inputValidator: (value) => {
           if (!value) {
@@ -108,8 +108,8 @@ function handleMenuCommand(command: string, item: ConversationItem<ChatSessionVo
       }).then(({ value }) => {
         sessionStore
           .updateSession({
-            id: item.id!,
-            sessionTitle: value,
+            conv_id: item.conv_id!,
+            title: value,
             sessionContent: item.sessionContent,
           })
           .then(() => {
@@ -119,10 +119,10 @@ function handleMenuCommand(command: string, item: ConversationItem<ChatSessionVo
             });
             nextTick(() => {
               // 如果是当前会话，则更新当前选中会话信息
-              if (sessionStore.currentSession?.id === item.id) {
+              if (sessionStore.currentSession?.conv_id === item.conv_id) {
                 sessionStore.setCurrentSession({
                   ...item,
-                  sessionTitle: value,
+                  title: value,
                 });
               }
             });
@@ -175,8 +175,8 @@ function handleMenuCommand(command: string, item: ConversationItem<ChatSessionVo
               :tooltip-offset="60"
               show-built-in-menu
               groupable
-              row-key="id"
-              label-key="sessionTitle"
+              row-key="conv_id"
+              label-key="title"
               tooltip-placement="right"
               :load-more="handleLoadMore"
               :load-more-loading="loadMoreLoading"

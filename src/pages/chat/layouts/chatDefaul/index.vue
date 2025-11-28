@@ -1,8 +1,8 @@
 <!-- 默认消息列表页 -->
 <script setup lang="ts">
 import type { FilesCardProps } from 'vue-element-plus-x/types/FilesCard';
-import FilesSelect from '@/components/FilesSelect/index.vue';
-import ModelSelect from '@/components/ModelSelect/index.vue';
+// import FilesSelect from '@/components/FilesSelect/index.vue';
+// import ModelSelect from '@/components/ModelSelect/index.vue';
 import WelecomeText from '@/components/WelecomeText/index.vue';
 import { useUserStore } from '@/stores';
 import { useFilesStore } from '@/stores/modules/files';
@@ -59,7 +59,7 @@ watch(
       }"
       variant="updown"
       clearable
-      allow-speech
+      :allow-speech="false"
       @submit="handleSend"
     >
       <template #header>
@@ -97,8 +97,8 @@ watch(
       </template>
       <template #prefix>
         <div class="flex-1 flex items-center gap-8px flex-none w-fit overflow-hidden">
-          <FilesSelect />
-          <ModelSelect />
+          <!-- <FilesSelect /> -->
+          <!-- <ModelSelect /> -->
         </div>
       </template>
     </Sender>

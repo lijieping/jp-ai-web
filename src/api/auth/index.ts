@@ -2,14 +2,7 @@ import type { EmailCodeDTO, LoginDTO, LoginVO, RegisterDTO } from './types';
 import { post } from '@/utils/request';
 
 export const login = (data: LoginDTO) => { 
-    return post<LoginVO>('/user/session', data).json().then(res => {
-      console.log('Login response:', res);
-      return res;
-    })
-    .catch(err => {
-      console.error('Login error:', err);
-      throw err; // 重新抛出以保持错误传播
-    });
+    return post<LoginVO>('/user/session', data).json();
 };
 
 // 邮箱验证码

@@ -3,6 +3,7 @@ import { defineStore } from 'pinia';
 import { getChatList } from '@/api';
 import { useUserStore } from './user';
 import defaultAvatar from '@/assets/images/default-avatar.png'
+import agentAvatar from '@/assets/images/agent-avatar.png'
 
 export const useChatStore = defineStore('chat', () => {
   const userStore = useUserStore();
@@ -12,6 +13,8 @@ export const useChatStore = defineStore('chat', () => {
     const userInfo = userStore.userInfo;
     return userInfo?.avatar || defaultAvatar;
   });
+  // ai头像
+  const aiAvatar = computed(() => agentAvatar);
 
   // 是否开启深度思考
   const isDeepThinking = ref<boolean>(false);
@@ -34,9 +37,7 @@ export const useChatStore = defineStore('chat', () => {
         isMarkdown: !isUser,
         // variant: 'shadow',
         // shape: 'corner',
-        avatar: isUser
-          ? avatar
-          : 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
+        avatar: isUser? avatar.value : aiAvatar.value,
         avatarSize: '32px',
         typing: false,
         reasoning_content: thinkContent,
@@ -57,8 +58,8 @@ export const useChatStore = defineStore('chat', () => {
         sessionId,
         userId: userStore.userInfo?.userId as number,
       });
-      if (res.rows) {
-        setChatMap(sessionId, res.rows);
+      if (res.data) {
+        setChatMap(sessionId, res.data);
       }
     }
     catch (error) {

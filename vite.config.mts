@@ -28,7 +28,8 @@ export default defineConfig((cnf) => {
       proxy: {
       '/api': {
         target: 'http://localhost:9000',
-        changeOrigin: true
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '')
       }
   }
 }

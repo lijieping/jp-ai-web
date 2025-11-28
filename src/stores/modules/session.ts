@@ -59,20 +59,21 @@ export const useSessionStore = defineStore('session', () => {
 
     try {
       const params: GetSessionListParams = {
-        userId: userStore.userInfo?.userId as number,
-        pageNum: page,
-        pageSize: pageSize.value,
-        isAsc: 'desc',
-        orderByColumn: 'createTime',
+        user_id: userStore.userInfo?.userId as number,
+        cur_page: page,
+        page_size: pageSize.value,
+        // isAsc: 'desc',
+        // orderByColumn: 'created_at',
       };
 
-      const resArr = await get_session_list(params);
+      const rsp = await get_session_list(params);
+    
 
       // 预处理会话分组 并添加前缀图标
-      const res = processSessions(resArr.rows);
+      const res = processSessions(rsp.data.list);
 
-      const allSessions = new Map(sessionList.value.map(item => [item.id, item])); // 现有所有数据
-      res.forEach(item => allSessions.set(item.id, { ...item })); // 更新/添加数据
+      const allSessions = new Map(sessionList.value.map(item => [item.conv_id, item])); // 现有所有数据
+      res.forEach(item => allSessions.set(item.conv_id, { ...item })); // 更新/添加数据
 
       // 按服务端排序重建列表（假设分页数据是按时间倒序，第一页是最新，后续页依次递减）
       // 此处需根据接口返回的排序规则调整，假设每页数据是递增的（第一页最新，第二页次新，第三页 oldest）
@@ -80,13 +81,13 @@ export const useSessionStore = defineStore('session', () => {
         // 第一页是最新数据，应排在列表前面
         sessionList.value = [
           ...res, // 新的第一页数据（最新）
-          ...Array.from(allSessions.values()).filter(item => !res.some(r => r.id === item.id)), // 保留未被第一页覆盖的旧数据
+          ...Array.from(allSessions.values()).filter(item => !res.some(r => r.conv_id === item.conv_id)), // 保留未被第一页覆盖的旧数据
         ];
       }
       else {
         // 非第一页数据是更旧的数据，追加到列表末尾
         sessionList.value = [
-          ...sessionList.value.filter(item => !res.some(r => r.id === item.id)), // 保留现有数据（除了被当前页更新的）
+          ...sessionList.value.filter(item => !res.some(r => r.conv_id === item.conv_id)), // 保留现有数据（除了被当前页更新的）
           ...res, // 追加当前页的新数据（更旧的）
         ];
       }
@@ -122,7 +123,7 @@ export const useSessionStore = defineStore('session', () => {
       const res = await create_session(data);
       // 创建会话后立刻查询列表会话
       // 1. 先找到被修改会话在 sessionList 中的索引（假设 sessionList 是按服务端排序的完整列表）
-      const targetIndex = sessionList.value.findIndex(session => session.id === `${res.data}`);
+      const targetIndex = sessionList.value.findIndex(session => session.conv_id === `${res.data}`);
       // 2. 计算该会话所在的页码（页大小固定为 pageSize.value）
       const targetPage
         = targetIndex >= 0
@@ -156,7 +157,7 @@ export const useSessionStore = defineStore('session', () => {
     try {
       await update_session(item);
       // 1. 先找到被修改会话在 sessionList 中的索引（假设 sessionList 是按服务端排序的完整列表）
-      const targetIndex = sessionList.value.findIndex(session => session.id === item.id);
+      const targetIndex = sessionList.value.findIndex(session => session.conv_id === item.conv_id);
       // 2. 计算该会话所在的页码（页大小固定为 pageSize.value）
       const targetPage
         = targetIndex >= 0
@@ -175,7 +176,7 @@ export const useSessionStore = defineStore('session', () => {
     try {
       await delete_session(ids);
       // 1. 先找到被修改会话在 sessionList 中的索引（假设 sessionList 是按服务端排序的完整列表）
-      const targetIndex = sessionList.value.findIndex(session => session.id === ids[0]);
+      const targetIndex = sessionList.value.findIndex(session => session.conv_id === ids[0]);
       // 2. 计算该会话所在的页码（页大小固定为 pageSize.value）
       const targetPage
         = targetIndex >= 0
@@ -194,7 +195,7 @@ export const useSessionStore = defineStore('session', () => {
     const currentDate = new Date();
 
     return sessions.map((session) => {
-      const createDate = new Date(session.createTime!);
+      const createDate = new Date(session.created_at!);
       const diffDays = Math.floor(
         (currentDate.getTime() - createDate.getTime()) / (1000 * 60 * 60 * 24),
       );

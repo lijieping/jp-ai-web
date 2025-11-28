@@ -28,11 +28,11 @@ export interface GetSessionListParams {
   /**
    * 当前页数
    */
-  pageNum?: number;
+  cur_page?: number;
   /**
    * 分页大小
    */
-  pageSize?: number;
+  page_size?: number;
   /**
    * 请求参数
    */
@@ -60,7 +60,7 @@ export interface GetSessionListParams {
   /**
    * 用户id
    */
-  userId: number;
+  user_id: number;
 }
 
 /**
@@ -71,7 +71,7 @@ export interface ChatSessionVo {
    * 主键
    */
   // id?: number
-  id?: string;
+  conv_id?: string;
   /**
    * 备注
    */
@@ -83,15 +83,15 @@ export interface ChatSessionVo {
   /**
    * 会话标题
    */
-  sessionTitle?: string;
+  title?: string;
   /**
    * 用户id
    */
-  userId?: number;
+  user_id?: number;
   /**
    * 创建时间
    */
-  createTime?: Date;
+  created_at?: Date;
   /**
    * 自定义的消息前缀图标字段
    */
