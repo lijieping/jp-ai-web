@@ -175,6 +175,19 @@ export const useSessionStore = defineStore('session', () => {
   const deleteSessions = async (ids: string[]) => {
     try {
       await delete_session(ids);
+
+      /** 关键修复 begin：直接从前端sessionList中过滤掉被删除的会话**********/
+      console.log('删除会话IDs:', ids);
+      sessionList.value = sessionList.value.filter(session => {
+        const is_in_sessionList = session.conv_id && !ids.includes(session.conv_id);
+        console.log(`会话ID: ${session.conv_id}, 保留: ${is_in_sessionList}`);
+        return is_in_sessionList;
+      });
+      if (currentSession.value && currentSession.value.conv_id && ids.includes(currentSession.value.conv_id)) {
+        setCurrentSession(null);
+      }
+      /*关键修复 end***********************************/
+
       // 1. 先找到被修改会话在 sessionList 中的索引（假设 sessionList 是按服务端排序的完整列表）
       const targetIndex = sessionList.value.findIndex(session => session.conv_id === ids[0]);
       // 2. 计算该会话所在的页码（页大小固定为 pageSize.value）

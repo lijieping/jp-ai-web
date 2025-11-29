@@ -4,11 +4,11 @@ import type { ConversationItem } from 'vue-element-plus-x/types/Conversations';
 import type { ChatSessionVo } from '@/api/session/types';
 import { useRoute, useRouter } from 'vue-router';
 import { get_session } from '@/api';
-import logo from '@/assets/images/logo.png';
 import SvgIcon from '@/components/SvgIcon/index.vue';
 import Collapse from '@/layouts/components/Header/components/Collapse.vue';
 import { useDesignStore } from '@/stores';
 import { useSessionStore } from '@/stores/modules/session';
+import Logo from '@/layouts/components/Logo/index.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -19,6 +19,7 @@ const sessionId = computed(() => route.params?.id);
 const conversationsList = computed(() => sessionStore.sessionList);
 const loadMoreLoading = computed(() => sessionStore.isLoadingMore);
 const active = ref<string | undefined>();
+
 
 onMounted(async () => {
   // 获取会话列表
@@ -34,7 +35,7 @@ onMounted(async () => {
 watch(
   () => sessionStore.currentSession,
   (newValue) => {
-    active.value = newValue ? `${newValue.id}` : undefined;
+    active.value = newValue ? `${newValue.conv_id}` : undefined;
   },
 );
 
@@ -110,7 +111,7 @@ function handleMenuCommand(command: string, item: ConversationItem<ChatSessionVo
           .updateSession({
             conv_id: item.conv_id!,
             title: value,
-            sessionContent: item.sessionContent,
+            user_id: item.user_id,
           })
           .then(() => {
             ElMessage({
@@ -148,8 +149,7 @@ function handleMenuCommand(command: string, item: ConversationItem<ChatSessionVo
     <div class="aside-wrapper">
       <div v-if="!designStore.isCollapse" class="aside-header">
         <div class="flex items-center gap-8px hover:cursor-pointer" @click="handleCreatChat">
-          <el-image :src="logo" alt="logo" fit="cover" class="logo-img" />
-          <span class="logo-text max-w-150px text-overflow">Element Plus X</span>
+          <Logo />
         </div>
         <Collapse class="ml-auto" />
       </div>
@@ -229,28 +229,6 @@ function handleMenuCommand(command: string, item: ConversationItem<ChatSessionVo
       align-items: center;
       height: 36px;
       margin: 10px 12px 0;
-      .logo-img {
-        box-sizing: border-box;
-        width: 36px;
-        height: 36px;
-        padding: 4px;
-        overflow: hidden;
-        background-color: #ffffff;
-        border-radius: 50%;
-        img {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 100%;
-          height: 100%;
-        }
-      }
-      .logo-text {
-        font-size: 16px;
-        font-weight: 700;
-        color: rgb(0 0 0 / 85%);
-        transform: skewX(-2deg);
-      }
     }
 
     // 侧边栏内容样式

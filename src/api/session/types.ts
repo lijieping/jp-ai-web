@@ -70,16 +70,7 @@ export interface ChatSessionVo {
   /**
    * 主键
    */
-  // id?: number
   conv_id?: string;
-  /**
-   * 备注
-   */
-  remark?: string;
-  /**
-   * 会话内容
-   */
-  sessionContent?: string;
   /**
    * 会话标题
    */

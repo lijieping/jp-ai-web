@@ -15,7 +15,7 @@ function handleClickTitle() {
     confirmButtonClass: 'el-button--primary',
     cancelButtonClass: 'el-button--info',
     roundButton: true,
-    inputValue: currentSession.value?.sessionTitle,
+    inputValue: currentSession.value?.title,
     inputValidator: (value) => {
       if (!value) {
         return false;
@@ -26,9 +26,9 @@ function handleClickTitle() {
     .then(({ value }) => {
       sessionStore
         .updateSession({
-          id: currentSession.value!.id,
-          sessionTitle: value,
-          sessionContent: currentSession.value!.sessionContent,
+          conv_id: currentSession.value!.conv_id,
+          title: value,
+          user_id: currentSession.value!.user_id,
         })
         .then(() => {
           ElMessage({
@@ -39,7 +39,7 @@ function handleClickTitle() {
             // 如果是当前会话，则更新当前选中会话信息
             sessionStore.setCurrentSession({
               ...currentSession.value,
-              sessionTitle: value,
+              title: value,
             });
           });
         });
@@ -61,7 +61,7 @@ function handleClickTitle() {
         @click="handleClickTitle"
       >
         <div class="text-overflow select-none pr-8px">
-          {{ currentSession.sessionTitle }}
+          {{ currentSession.title }}
         </div>
         <SvgIcon name="draft-line" size="14" class="flex-none c-gray-500" />
       </div>

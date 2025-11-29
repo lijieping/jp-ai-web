@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue';
-import logoPng from '@/assets/images/logo.png';
+import Logo from '@/layouts/components/Logo/index.vue';
 import SvgIcon from '@/components/SvgIcon/index.vue';
 import { useUserStore } from '@/stores';
 import { useLoginFormStore } from '@/stores/modules/loginForm';
@@ -32,10 +32,10 @@ watch(
   { immediate: true },
 );
 
-// 切换二维码登录
-function toggleLoginMode() {
-  isQrMode.value = !isQrMode.value;
-}
+// // 切换二维码登录
+// function toggleLoginMode() {
+//   isQrMode.value = !isQrMode.value;
+// }
 
 // 点击遮罩层关闭对话框（触发过渡动画）
 function handleMaskClick() {
@@ -60,8 +60,7 @@ function onAfterLeave() {
         <div v-show="visible" class="glass-dialog">
           <div class="left-section">
             <div class="logo-wrap">
-              <img :src="logoPng" class="logo-img">
-              <span class="logo-text">Element Plus X</span>
+              <Logo />
             </div>
             <div class="ad-banner">
               <SvgIcon name="p-bangong" class-name="animate-up-down" />
@@ -184,20 +183,7 @@ function onAfterLeave() {
   justify-content: center;
   margin-top: 24px;
 }
-.left-section .logo-wrap .logo-img {
-  width: 40px;
-  height: 40px;
-  padding: 4px;
-  background: var(--login-dialog-logo-background);
-  border-radius: 12px;
-  box-shadow: 0 2px 12px 0 rgb(0 0 0 / 8%);
-  filter: drop-shadow(0 4px 4px rgb(0 0 0 / 10%));
-}
-.left-section .logo-wrap .logo-text {
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--login-dialog-logo-text-color);
-}
+
 .left-section .ad-banner {
   position: relative;
   width: 100%;

@@ -11,11 +11,11 @@ export function get_session_list(params: GetSessionListParams) {
 }
 
 export function create_session(data: CreateSessionDTO) {
-  return put('/conversation', data).json();
+  return post('/conversation', data).json();
 }
 
 export function update_session(data: ChatSessionVo) {
-  return put('/conversation', data).json();
+  return put('/conversation/' + data.conv_id, data).json();
 }
 
 export function get_session(id: string) {

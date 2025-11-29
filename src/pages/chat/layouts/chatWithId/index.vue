@@ -9,11 +9,12 @@ import { useHookFetch } from 'hook-fetch/vue';
 import { Sender } from 'vue-element-plus-x';
 import { useRoute } from 'vue-router';
 import { send } from '@/api';
+
 // import FilesSelect from '@/components/FilesSelect/index.vue';
 // import ModelSelect from '@/components/ModelSelect/index.vue';
 import { useChatStore } from '@/stores/modules/chat';
 import { useFilesStore } from '@/stores/modules/files';
-import { useModelStore } from '@/stores/modules/model';
+//import { useModelStore } from '@/stores/modules/model';
 import { useUserStore } from '@/stores/modules/user';
 import defaultAvatar from '@/assets/images/default-avatar.png'
 import agentAvatar from '@/assets/images/agent-avatar.png'
