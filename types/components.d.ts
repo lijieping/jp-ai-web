@@ -10,6 +10,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     AccountPassword: typeof import('./../src/components/LoginDialog/components/FormLogin/AccountPassword.vue')['default']
     DeepThinking: typeof import('./../src/components/DeepThinking/index.vue')['default']
+    ElAside: typeof import('element-plus/es')['ElAside']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElContainer: typeof import('element-plus/es')['ElContainer']

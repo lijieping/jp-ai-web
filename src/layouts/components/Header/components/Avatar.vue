@@ -23,11 +23,7 @@ const popoverRef = ref();
 
 // 弹出面板内容
 const popoverList = ref([
-  {
-    key: '1',
-    title: '收藏夹',
-    icon: 'book-mark-fill',
-  },
+  {    key: '1',    title: '知识库',    icon: 'book-mark-fill',  },
   {
     key: '2',
     title: '设置',
@@ -48,8 +44,9 @@ const popoverList = ref([
 function handleClick(item: any) {
   switch (item.key) {
     case '1':
-      ElMessage.warning('暂未开放');
-      console.log('点击了收藏夹');
+      console.log('点击了知识库');
+      // 跳转到知识库页面
+      window.location.href = '/knowledge-base'; // 假设知识库页面路由为/knowledge-base
       break;
     case '2':
       ElMessage.warning('暂未开放');

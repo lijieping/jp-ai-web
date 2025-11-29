@@ -4,7 +4,6 @@ import type { AnyObject } from 'typescript-api-pro';
 import type { BubbleProps } from 'vue-element-plus-x/types/Bubble';
 import type { BubbleListInstance } from 'vue-element-plus-x/types/BubbleList';
 import type { FilesCardProps } from 'vue-element-plus-x/types/FilesCard';
-import type { ThinkingStatus } from 'vue-element-plus-x/types/Thinking';
 import { useHookFetch } from 'hook-fetch/vue';
 import { Sender } from 'vue-element-plus-x';
 import { useRoute } from 'vue-router';
@@ -167,10 +166,10 @@ function addMessage(message: string, isUser: boolean) {
   bubbleItems.value.push(obj);
 }
 
-// 展开收起 事件展示
-function handleChange(payload: { value: boolean; status: ThinkingStatus }) {
-  console.log('value', payload.value, 'status', payload.status);
-}
+// 展开收起 事件展示（暂时注释，如需使用可取消注释）
+// function handleChange(payload: { value: boolean; status: ThinkingStatus }) {
+//   console.log('value', payload.value, 'status', payload.status);
+// }
 
 function handleDeleteCard(_item: FilesCardProps, index: number) {
   filesStore.deleteFileByIndex(index);
@@ -194,9 +193,8 @@ watch(
 </script>
 
 <template>
-  <div class="chat-with-id-container">
-    <div class="chat-warp">
-      <BubbleList ref="bubbleListRef" :list="bubbleItems" max-height="calc(100vh - 240px)">
+      <div class="chat-warp">
+        <BubbleList ref="bubbleListRef" :list="bubbleItems" max-height="calc(100vh - 240px)">
         <!-- <template #header="{ item }">
           <Thinking
             v-if="item.reasoning_content" v-model="item.thinlCollapse" :content="item.reasoning_content"
@@ -257,59 +255,52 @@ watch(
         </template>
       </Sender>
     </div>
-  </div>
 </template>
 
 <style scoped lang="scss">
-.chat-with-id-container {
-  position: relative;
+.chat-warp {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  justify-content: space-between;
   width: 100%;
   max-width: 800px;
-  height: 100%;
-  .chat-warp {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 100%;
-    height: calc(100vh - 60px);
-    .thinking-chain-warp {
-      margin-bottom: 12px;
-    }
+  height: calc(100vh - 60px);
+  .thinking-chain-warp {
+    margin-bottom: 12px;
   }
-  :deep() {
-    .el-bubble-list {
-      padding-top: 24px;
-    }
-    .el-bubble {
-      padding: 0 12px;
-      padding-bottom: 24px;
-    }
-    .el-typewriter {
-      overflow: hidden;
-      border-radius: 12px;
-    }
-    .user-content {
-      // 换行
-      white-space: pre-wrap;
-    }
-    .markdown-body {
-      background-color: transparent;
-    }
-    .markdown-elxLanguage-header-div {
-      top: -25px !important;
-    }
+}
 
-    // xmarkdown 样式
-    .elx-xmarkdown-container {
-      padding: 8px 4px;
-    }
+:deep() {
+  .el-bubble-list {
+    padding-top: 24px;
   }
-  .chat-defaul-sender {
-    width: 100%;
-    margin-bottom: 22px;
+  .el-bubble {
+    padding: 0 12px;
+    padding-bottom: 24px;
   }
+  .el-typewriter {
+    overflow: hidden;
+    border-radius: 12px;
+  }
+  .user-content {
+    // 换行
+    white-space: pre-wrap;
+  }
+  .markdown-body {
+    background-color: transparent;
+  }
+  .markdown-elxLanguage-header-div {
+    top: -25px !important;
+  }
+
+  // xmarkdown 样式
+  .elx-xmarkdown-container {
+    padding: 8px 4px;
+  }
+}
+
+.chat-defaul-sender {
+  width: 100%;
+  margin-bottom: 22px;
 }
 </style>

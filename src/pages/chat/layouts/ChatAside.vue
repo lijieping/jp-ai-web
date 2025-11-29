@@ -8,7 +8,7 @@ import SvgIcon from '@/components/SvgIcon/index.vue';
 import Collapse from '@/layouts/components/Header/components/Collapse.vue';
 import { useDesignStore } from '@/stores';
 import { useSessionStore } from '@/stores/modules/session';
-import Logo from '@/layouts/components/Logo/index.vue';
+
 
 const route = useRoute();
 const router = useRouter();
@@ -22,6 +22,7 @@ const active = ref<string | undefined>();
 
 
 onMounted(async () => {
+    console.log('ChatAside mounted');
   // 获取会话列表
   await sessionStore.requestSessionList();
   // 高亮最新会话
@@ -137,37 +138,39 @@ function handleMenuCommand(command: string, item: ConversationItem<ChatSessionVo
 </script>
 
 <template>
-  <div
-    class="aside-container"
-    :class="{
-      'aside-container-suspended': designStore.isSafeAreaHover,
-      'aside-container-collapse': designStore.isCollapse,
-      // 折叠且未激活悬停时添加 no-delay 类
-      'no-delay': designStore.isCollapse && !designStore.hasActivatedHover,
-    }"
-  >
-    <div class="aside-wrapper">
-      <div v-if="!designStore.isCollapse" class="aside-header">
-        <div class="flex items-center gap-8px hover:cursor-pointer" @click="handleCreatChat">
-          <Logo />
+  <div>
+    <!-- 折叠按钮移到侧边栏外，确保在折叠状态下仍然可见 -->
+    <Collapse class="aside-collapse-btn" v-if="designStore.isCollapse" />
+    
+    <div
+      class="aside-container"
+      :class="{
+        'aside-container-suspended': designStore.isSafeAreaHover,
+        'aside-container-collapse': designStore.isCollapse,
+        // 折叠且未激活悬停时添加 no-delay 类
+        'no-delay': designStore.isCollapse && !designStore.hasActivatedHover,
+      }"
+    >
+      <div class="aside-wrapper">
+        <div class="aside-header" :class="{ 'collapse-header': designStore.isCollapse }">
+          <!-- 当侧边栏展开时显示折叠按钮 -->
+          <Collapse v-if="!designStore.isCollapse" />
         </div>
-        <Collapse class="ml-auto" />
-      </div>
 
-      <div class="aside-body">
-        <div class="creat-chat-btn-wrapper">
-          <div class="creat-chat-btn" @click="handleCreatChat">
-            <el-icon class="add-icon">
-              <Plus />
-            </el-icon>
-            <span class="creat-chat-text">新对话</span>
-            <SvgIcon name="ctrl+k" size="37" />
+        <div class="aside-body">
+          <div class="creat-chat-btn-wrapper">
+            <div class="creat-chat-btn" @click="handleCreatChat">
+              <el-icon class="add-icon">
+                <Plus />
+              </el-icon>
+              <span class="creat-chat-text">新对话</span>
+              <SvgIcon name="ctrl+k" size="37" />
+            </div>
           </div>
-        </div>
-
-        <div class="aside-content">
-          <div v-if="conversationsList.length > 0" class="conversations-wrap overflow-hidden">
-            <Conversations
+        
+          <div class="aside-content">
+            <div v-if="conversationsList.length > 0" class="conversations-wrap overflow-hidden">
+              <Conversations
               v-model:active="active"
               :items="conversationsList"
               :label-max-width="200"
@@ -196,10 +199,11 @@ function handleMenuCommand(command: string, item: ConversationItem<ChatSessionVo
               }"
               @menu-command="handleMenuCommand"
               @change="handleChange"
-            />
+              />
+            </div>
+          
+            <el-empty v-else class="h-full flex-center" description="暂无对话记录" />
           </div>
-
-          <el-empty v-else class="h-full flex-center" description="暂无对话记录" />
         </div>
       </div>
     </div>
@@ -212,12 +216,20 @@ function handleMenuCommand(command: string, item: ConversationItem<ChatSessionVo
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 11;
+  z-index: 10;
   width: var(--sidebar-default-width);
   height: 100%;
   pointer-events: auto;
   background-color: var(--sidebar-background-color);
   border-right: 0.5px solid var(--s-color-border-tertiary, rgb(0 0 0 / 8%));
+
+  .aside-header.collapse-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8px;
+    width: 100%;
+  }
   .aside-wrapper {
     display: flex;
     flex-direction: column;
@@ -225,10 +237,11 @@ function handleMenuCommand(command: string, item: ConversationItem<ChatSessionVo
 
     // 侧边栏头部样式
     .aside-header {
-      display: flex;
-      align-items: center;
-      height: 36px;
-      margin: 10px 12px 0;
+        display: flex;
+        align-items: center;
+        height: 36px;
+        margin: 10px 12px 0;
+        visibility: visible;
     }
 
     // 侧边栏内容样式
@@ -267,6 +280,22 @@ function handleMenuCommand(command: string, item: ConversationItem<ChatSessionVo
             color: rgb(0 87 255 / 30%);
           }
         }
+        
+        .creat-chat-btn-collapse {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 40px;
+          height: 40px;
+          margin: 8px auto;
+          border-radius: 50%;
+          background-color: var(--bg-primary, #ffffff);
+          border: 1px solid var(--border-color, #e4e7ed);
+          cursor: pointer;
+          &:hover {
+            background-color: var(--hover-color, #f5f7fa);
+          }
+        }
       }
       .aside-content {
         display: flex;
@@ -277,7 +306,7 @@ function handleMenuCommand(command: string, item: ConversationItem<ChatSessionVo
 
         // 会话列表高度-基础样式
         .conversations-wrap {
-          height: calc(100vh - 110px);
+          height: calc(100% - 70px);
           .label {
             display: flex;
             align-items: center;
@@ -287,6 +316,21 @@ function handleMenuCommand(command: string, item: ConversationItem<ChatSessionVo
       }
     }
   }
+}
+
+// 折叠按钮样式 - 在侧边栏折叠时显示在外部
+.aside-collapse-btn {
+  position: fixed;
+  left: 0;
+  top: 60px;
+  z-index: 9999;
+  background: var(--sidebar-background-color);
+  border: 1px solid rgb(0 0 0 / 8%);
+  border-left: none;
+  border-radius: 0 8px 8px 0;
+  padding: 4px;
+  box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
 }
 
 // 折叠样式

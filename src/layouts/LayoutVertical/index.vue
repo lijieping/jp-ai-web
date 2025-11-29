@@ -1,13 +1,23 @@
 <!-- 纵向布局作为基础布局 -->
 <script setup lang="ts">
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
 import { useSafeArea } from '@/hooks/useSafeArea';
 import { useWindowWidthObserver } from '@/hooks/useWindowWidthObserver';
-import Aside from '@/layouts/components/Aside/index.vue';
 import Header from '@/layouts/components/Header/index.vue';
 import Main from '@/layouts/components/Main/index.vue';
 import { useDesignStore } from '@/stores';
 
 const designStore = useDesignStore();
+const route = useRoute();
+
+/* 预留侧边栏，各个模块自己实现” */
+import { defineAsyncComponent } from 'vue'
+
+const sidebarComponent = computed(() => {
+  const loader = route.meta?.sidebarComponent as (() => Promise<any>) | undefined
+  return loader ? defineAsyncComponent(loader) : null
+})
 
 const isCollapse = computed(() => designStore.isCollapse);
 
@@ -27,14 +37,19 @@ useWindowWidthObserver();
 </script>
 
 <template>
-  <el-container class="layout-container">
-    <el-header class="layout-header">
-      <Header />
-    </el-header>
-    <el-container class="layout-container-main">
-      <Aside />
-      <el-main class="layout-main">
-        <!-- 路由页面 -->
+  <el-container class="layout-container">    
+    <!-- 预留侧边栏，各模块自己实现 -->
+    <el-aside v-if="sidebarComponent">
+      <component :is="sidebarComponent" />
+    </el-aside>
+  
+    <el-container class="layout-container">
+      <!-- header -->
+      <el-header class="layout-header">
+        <Header />
+      </el-header>
+      <el-main>
+        <!-- 主内容，各模块自己实现 -->
         <Main />
       </el-main>
     </el-container>
@@ -54,17 +69,6 @@ useWindowWidthObserver();
     height: 100%;
     padding: 0;
   }
-  .layout-container-main {
-    margin-left: var(--sidebar-left-container-default-width, 0);
-    transition: margin-left 0.3s ease;
-  }
-}
-
-/** 去除菜单右侧边框 */
-.el-menu {
-  border-right: none;
-}
-.layout-scrollbar {
-  width: 100%;
+  display: flex;
 }
 </style>

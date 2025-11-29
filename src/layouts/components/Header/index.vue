@@ -4,9 +4,9 @@ import { onKeyStroke } from '@vueuse/core';
 import { SIDE_BAR_WIDTH } from '@/config/index';
 import { useDesignStore, useUserStore } from '@/stores';
 import { useSessionStore } from '@/stores/modules/session';
+import Logo from '@/layouts/components/Logo/index.vue';
 import Avatar from './components/Avatar.vue';
-import Collapse from './components/Collapse.vue';
-import CreateChat from './components/CreateChat.vue';
+
 import LoginBtn from './components/LoginBtn.vue';
 import TitleEditing from './components/TitleEditing.vue';
 
@@ -50,14 +50,9 @@ onKeyStroke(event => event.ctrlKey && event.key.toLowerCase() === 'k', handleCtr
           class="overflow-hidden flex h-full items-center flex-row flex-1 w-fit flex-shrink-0 min-w-0"
         >
           <div class="w-full flex items-center flex-row">
-            <!-- 左边 -->
-            <div
-              v-if="designStore.isCollapse"
-              class="left-box flex h-full items-center pl-20px gap-12px flex-shrink-0 flex-row"
-            >
-              <Collapse />
-              <CreateChat />
-              <div v-if="currentSession" class="w-0.5px h-30px bg-[rgba(217,217,217)]" />
+            <!-- Logo -->
+            <div class="logo-wrapper pl-12px">
+              <Logo />
             </div>
 
             <!-- 中间 -->
@@ -86,15 +81,14 @@ onKeyStroke(event => event.ctrlKey && event.key.toLowerCase() === 'k', handleCtr
   height: fit-content;
   .header-box {
     width: 100%;
-    width: calc(
-      100% - var(--sidebar-left-container-default-width, 0px) - var(
-          --sidebar-right-container-default-width,
-          0px
-        )
-    );
     height: var(--header-container-default-heigth);
-    margin: 0 var(--sidebar-right-container-default-width, 0) 0
-      var(--sidebar-left-container-default-width, 0);
+    margin: 0 var(--sidebar-right-container-default-width, 0) 0 0;
   }
+}
+
+.logo-wrapper {
+  display: flex;
+  align-items: center;
+  height: 100%;
 }
 </style>

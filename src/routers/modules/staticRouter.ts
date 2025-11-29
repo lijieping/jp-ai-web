@@ -13,7 +13,8 @@ export const layoutRouter: RouteRecordRaw[] = [
         name: 'chat',
         component: () => import('@/pages/chat/index.vue'),
         meta: {
-          // title: '通用聊天页面',
+          // 聊天业务侧边栏
+          sidebarComponent: () => import('@/pages/chat/layouts/ChatAside.vue'),
           isDefaultChat: true,
           icon: 'HomeFilled',
           // isHide: '1', // 是否在菜单中隐藏[0是，1否] 预留
@@ -27,8 +28,18 @@ export const layoutRouter: RouteRecordRaw[] = [
         name: 'chatWithId',
         component: () => import('@/pages/chat/index.vue'),
         meta: {
-          // title: '带 ID 的聊天页面',
+          // 聊天业务侧边栏
+          sidebarComponent: () => import('@/pages/chat/layouts/ChatAside.vue'),
           isDefaultChat: false,
+        },
+      },
+      {
+        path: '/knowledge-base',
+        name: 'knowledge-base',
+        component: () => import('@/pages/knowledge-base/index.vue'),
+        meta: {
+          title: '知识库',
+          icon: 'DocumentCopy',
         },
       },
     ],

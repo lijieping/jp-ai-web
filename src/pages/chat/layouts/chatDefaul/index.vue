@@ -7,7 +7,6 @@ import WelecomeText from '@/components/WelecomeText/index.vue';
 import { useUserStore } from '@/stores';
 import { useFilesStore } from '@/stores/modules/files';
 import { useSessionStore } from '@/stores/modules/session';
-
 const userStore = useUserStore();
 const sessionStore = useSessionStore();
 const filesStore = useFilesStore();
@@ -47,7 +46,6 @@ watch(
 </script>
 
 <template>
-  <div class="chat-defaul-wrap">
     <WelecomeText />
     <Sender
       ref="senderRef"
@@ -102,20 +100,11 @@ watch(
         </div>
       </template>
     </Sender>
-  </div>
 </template>
 
 <style scoped lang="scss">
-.chat-defaul-wrap {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.chat-defaul-sender {
   width: 100%;
   max-width: 800px;
-  min-height: 450px;
-  .chat-defaul-sender {
-    width: 100%;
-  }
 }
 </style>
